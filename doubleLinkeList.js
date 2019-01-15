@@ -27,11 +27,11 @@ class DoublyLinkedList {
   }
   pop() {
     if(!this.head) return undefined;
+    let node = this.tail;
     if(this.length === 1) {
       this.head = null;
       this.tail = null;
     } else {
-      let node = this.tail;
       this.tail = node.prev;
       this.tail.next = null;
       node.prev = null;
@@ -67,7 +67,7 @@ class DoublyLinkedList {
     return this;
   }
   get(index) {
-    if(index <= 0 || index >= this.length) return null;
+    if(index < 0 || index >= this.length) return null;
     if(index > this.length / 2) {
       let current = this.tail;
       for(let i = this.length - 1; i > index; i--) {
@@ -91,7 +91,7 @@ class DoublyLinkedList {
   }
   insert(index, val) {
     if(index < 0 || index >= this.length) return false;
-    if(index === 0) return !!this.unshift(val)
+    if(index === 0) return !!this.unshift(val);
     if(index === this.length) return !!this.push(val);
     let newNode = new Node(val);
     let current = this.get(index - 1);
@@ -104,17 +104,31 @@ class DoublyLinkedList {
     return true;
   }
   remove(index, val) {
-    if(index < 0 || index >= this.length) return false;
+    if(index < 0 || index >= this.length) return undefined;
     if(index === 0) return this.shift(val);
-    if(index === this.length -1) return this.pop(val);
-    let removeNode = get(index);
-    let prevNode = removedNode.prev;
+    if(index === this.length - 1) return this.pop(val);
+    let removeNode = this.get(index);
+    let prevNode = removeNode.prev;
     let afterNode = removeNode.next;
     prevNode.next = afterNode;
     afterNode.prev = prevNode;
-    removeNode.prev = null;
     removeNode.next = null;
+    removeNode.prev = null;
     this.length--;
     return removeNode;
+  }
+  reverse() {
+    let node = this.tail;
+    this.tail = this.head;
+    this.head = node;
+    let next;
+    let prev = null;
+    for(let i = this.length - 1; i < this.length; i++) {
+      next = node.next;
+      node.next = prev;
+      prev = node;
+      node = next;
+    }
+    return this;
   }
 }
