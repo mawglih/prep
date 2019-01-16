@@ -555,3 +555,26 @@ function radixSearch(nums) {
   }
   return nums;
 }
+
+// reduce (array, callback, accumulator)
+// take an array of items, output single value
+function myReduce(arr, fn, acc) {
+  if(!acc) {
+      acc = arr.shift();
+  }
+  arr.forEach((elem, index, arr) => {
+      acc = fn(acc, elem, index);
+  })
+  return acc;
+} 
+
+// const list = [1, 1, 1];
+// console.log(myReduce(list, (acc, elem) => acc + elem))
+
+// map(arr, callback) -> using myReduce
+
+function map(arr, callback) {
+  //use myReduce in here
+  myReduce(arr,(el) => callback(el))
+  return myReturn(arr, (acc, item) => acc.concat(callback(item)), []);
+}
